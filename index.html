@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Convention Center</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body class="light-mode">
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <div class="logo">
+        <i class="fas fa-hotel"></i>
+        Elegance Convention
+      </div>
+      <div class="nav-toggle" id="navToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#home" class="active">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li class="theme-toggle">
+          <i class="fas fa-moon" id="themeToggle"></i>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Updated Hero Section -->
+    <section id="home" class="hero">
+      <div class="hero-background">
+        <div class="overlay"></div>
+        <div class="pattern-overlay"></div>
+      </div>
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1>
+            Welcome to<br /><span class="highlight"
+              >Centennial Convention Center</span
+            >
+          </h1>
+          <div class="typing-container">
+            <span class="typing-text"></span>
+            <span class="typing-cursor">|</span>
+          </div>
+          <p class="hero-description">
+            Creating Unforgettable Moments for Your Special Events
+          </p>
+          <div class="cta-buttons">
+            <a href="#contact" class="cta-button primary">Book Venue</a>
+            <a href="#gallery" class="cta-button secondary">View Gallery</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Update the gallery section -->
+    <section id="gallery" class="gallery-section">
+      <div class="section-header">
+        <h2>Our Gallery</h2>
+        <p>Explore Our Beautiful Spaces and Events</p>
+      </div>
+
+      <div class="gallery-grid">
+        <div class="gallery-item">
+          <img src="./assests/IMG_0053.jpeg" alt="Grand Hall" loading="lazy" />
+          <div class="gallery-overlay">
+            <h3>Grand Hall</h3>
+            <p>Perfect for Large Events</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img
+            src="./assests/IMG_0054.jpeg"
+            alt="Wedding Setup"
+            loading="lazy"
+          />
+          <div class="gallery-overlay">
+            <h3>Wedding Venue</h3>
+            <p>Elegant Wedding Arrangements</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img
+            src="./assests/IMG_0055.jpeg"
+            alt="Conference Setup"
+            loading="lazy"
+          />
+          <div class="gallery-overlay">
+            <h3>Conference Room</h3>
+            <p>Professional Meeting Space</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img
+            src="./assests/IMG_0056.jpeg"
+            alt="Banquet Hall"
+            loading="lazy"
+          />
+          <div class="gallery-overlay">
+            <h3>Banquet Hall</h3>
+            <p>Luxurious Dining Experience</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img
+            src="./assests/IMG_0057.jpeg"
+            alt="Outdoor Event"
+            loading="lazy"
+          />
+          <div class="gallery-overlay">
+            <h3>Outdoor Space</h3>
+            <p>Beautiful Garden Events</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img
+            src="./assests/IMG_0058.jpeg"
+            alt="Reception Area"
+            loading="lazy"
+          />
+          <div class="gallery-overlay">
+            <h3>Reception Area</h3>
+            <p>Welcoming Entrance</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img
+            src="./assests/IMG_0065.jpeg"
+            alt="VIP Lounge"
+            loading="lazy"
+          />
+          <div class="gallery-overlay">
+            <h3>VIP Lounge</h3>
+            <p>Exclusive Meeting Space</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img
+            src="./assests/IMG_0066.jpeg"
+            alt="Garden Area"
+            loading="lazy"
+          />
+          <div class="gallery-overlay">
+            <h3>Garden Area</h3>
+            <p>Outdoor Celebrations</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img
+            src="./assests/IMG_0067.jpeg"
+            alt="Dining Setup"
+            loading="lazy"
+          />
+          <div class="gallery-overlay">
+            <h3>Dining Setup</h3>
+            <p>Elegant Dining Experience</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img
+            src="./assests/IMG_0068.jpeg"
+            alt="Theater Hall"
+            loading="lazy"
+          />
+          <div class="gallery-overlay">
+            <h3>Theater Hall</h3>
+            <p>Perfect for Presentations</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img
+            src="./assests/IMG_0069.jpeg"
+            alt="Exhibition Space"
+            loading="lazy"
+          />
+          <div class="gallery-overlay">
+            <h3>Exhibition Space</h3>
+            <p>Ideal for Showcases</p>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img
+            src="./assests/IMG_0070.jpeg"
+            alt="Rooftop Venue"
+            loading="lazy"
+          />
+          <div class="gallery-overlay">
+            <h3>Rooftop Venue</h3>
+            <p>Scenic Event Space</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="script.js"></script>
+  </body>
+</html>
