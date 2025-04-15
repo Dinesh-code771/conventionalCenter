@@ -186,37 +186,33 @@ function init() {
   new TypeWriter(txtElement, words, wait);
 }
 
-// Add this to your existing script.js
+// Updated carousel functionality
 document.addEventListener("DOMContentLoaded", function () {
   const track = document.querySelector(".services-track");
-  const cards = document.querySelectorAll(".service-card");
-  const dotsContainer = document.querySelector(".service-dots");
+  const cards = track.querySelectorAll(".service-card");
+  const nextBtn = document.querySelector(".next-btn");
+  const prevBtn = document.querySelector(".prev-btn");
+  const dotsContainer = document.querySelector(".carousel-dots");
+
   let currentIndex = 0;
-  let interval;
+  let cardsToShow = 3;
+  let autoScrollInterval;
 
-  // Calculate dimensions
-  function updateDimensions() {
-    const isMobile = window.innerWidth <= 768;
-    const containerWidth = track.parentElement.offsetWidth;
-    const cardWidth = isMobile
-      ? containerWidth - 32 // Account for margins
-      : (containerWidth - 64) / 3; // Desktop: 3 cards with gaps
-
-    // Update card widths
-    cards.forEach((card) => {
-      card.style.width = `${cardWidth}px`;
-    });
-
-    return { isMobile, containerWidth, cardWidth };
+  // Initialize carousel
+  function initCarousel() {
+    const viewportWidth = window.innerWidth;
+    cardsToShow = viewportWidth >= 1024 ? 3 : 1;
+    createDots();
+    updateCarousel();
+    startAutoScroll();
   }
 
-  // Create dots
+  // Create navigation dots
   function createDots() {
-    dotsContainer.innerHTML = ""; // Clear existing dots
-    const { isMobile } = updateDimensions();
-    const totalSlides = Math.ceil(cards.length / (isMobile ? 1 : 3));
+    dotsContainer.innerHTML = "";
+    const numberOfDots = Math.ceil(cards.length / cardsToShow);
 
-    for (let i = 0; i < totalSlides; i++) {
+    for (let i = 0; i < numberOfDots; i++) {
       const dot = document.createElement("div");
       dot.classList.add("dot");
       if (i === 0) dot.classList.add("active");
@@ -225,103 +221,92 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Update dots
-  function updateDots() {
-    const dots = document.querySelectorAll(".dot");
-    dots.forEach((dot, index) => {
-      dot.classList.toggle("active", index === currentIndex);
+  // Update carousel position
+  function updateCarousel() {
+    const slideWidth = 100 / cardsToShow;
+    track.style.transform = `translateX(-${currentIndex * slideWidth}%)`;
+
+    // Update dots
+    document.querySelectorAll(".dot").forEach((dot, i) => {
+      dot.classList.toggle("active", i === currentIndex);
     });
+
+    // Update button visibility
+    updateNavigationButtons();
+  }
+
+  // Navigation button visibility
+  function updateNavigationButtons() {
+    const maxIndex = Math.ceil(cards.length / cardsToShow) - 1;
+    prevBtn.style.display = currentIndex === 0 ? "none" : "flex";
+    nextBtn.style.display = currentIndex === maxIndex ? "none" : "flex";
   }
 
   // Go to specific slide
   function goToSlide(index) {
-    const { isMobile, cardWidth } = updateDimensions();
-    const cardsPerView = isMobile ? 1 : 3;
-    currentIndex = index;
-
-    // Calculate the scroll position
-    let scrollOffset;
-    if (isMobile) {
-      // Center the card on mobile
-      scrollOffset = -(index * (cardWidth + 16)); // 16px for gap
-    } else {
-      // Show multiple cards on desktop
-      scrollOffset = -(index * (cardWidth * 3 + 32)); // 32px for gaps
-    }
-
-    track.style.transform = `translateX(${scrollOffset}px)`;
-    updateDots();
+    const maxIndex = Math.ceil(cards.length / cardsToShow) - 1;
+    currentIndex = Math.min(Math.max(index, 0), maxIndex);
+    updateCarousel();
   }
 
-  // Auto scroll
+  // Auto scroll functionality
   function startAutoScroll() {
-    interval = setInterval(() => {
-      const { isMobile } = updateDimensions();
-      const totalSlides = Math.ceil(cards.length / (isMobile ? 1 : 3));
-      currentIndex = (currentIndex + 1) % totalSlides;
-      goToSlide(currentIndex);
-    }, 2000);
+    clearInterval(autoScrollInterval);
+    autoScrollInterval = setInterval(() => {
+      const maxIndex = Math.ceil(cards.length / cardsToShow) - 1;
+      if (currentIndex >= maxIndex) {
+        currentIndex = 0;
+      } else {
+        currentIndex++;
+      }
+      updateCarousel();
+    }, 1000); // 1 second interval
   }
+
+  // Event Listeners
+  nextBtn.addEventListener("click", () => {
+    goToSlide(currentIndex + 1);
+    clearInterval(autoScrollInterval);
+  });
+
+  prevBtn.addEventListener("click", () => {
+    goToSlide(currentIndex - 1);
+    clearInterval(autoScrollInterval);
+  });
+
+  // Pause auto-scroll on hover
+  track.addEventListener("mouseenter", () => clearInterval(autoScrollInterval));
+  track.addEventListener("mouseleave", startAutoScroll);
+
+  // Handle window resize
+  window.addEventListener("resize", initCarousel);
 
   // Touch events for mobile
   let touchStartX = 0;
   let touchEndX = 0;
 
-  track.addEventListener(
-    "touchstart",
-    (e) => {
-      touchStartX = e.touches[0].clientX;
-      clearInterval(interval);
-    },
-    { passive: true }
-  );
+  track.addEventListener("touchstart", (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    clearInterval(autoScrollInterval);
+  });
 
-  track.addEventListener(
-    "touchmove",
-    (e) => {
-      touchEndX = e.touches[0].clientX;
-    },
-    { passive: true }
-  );
-
-  track.addEventListener("touchend", () => {
-    const difference = touchStartX - touchEndX;
-    if (Math.abs(difference) > 50) {
-      // Minimum swipe distance
-      const { isMobile } = updateDimensions();
-      const totalSlides = Math.ceil(cards.length / (isMobile ? 1 : 3));
-      if (difference > 0) {
-        // Swipe left
-        currentIndex = (currentIndex + 1) % totalSlides;
-      } else {
-        // Swipe right
-        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-      }
-      goToSlide(currentIndex);
-    }
+  track.addEventListener("touchend", (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
     startAutoScroll();
   });
 
-  // Pause on hover (desktop only)
-  track.addEventListener("mouseenter", () => clearInterval(interval));
-  track.addEventListener("mouseleave", startAutoScroll);
+  function handleSwipe() {
+    const difference = touchStartX - touchEndX;
+    const maxIndex = Math.ceil(cards.length / cardsToShow) - 1;
 
-  // Handle resize
-  let resizeTimer;
-  window.addEventListener("resize", () => {
-    clearTimeout(resizeTimer);
-    clearInterval(interval);
+    if (difference > 50 && currentIndex < maxIndex) {
+      goToSlide(currentIndex + 1);
+    } else if (difference < -50 && currentIndex > 0) {
+      goToSlide(currentIndex - 1);
+    }
+  }
 
-    resizeTimer = setTimeout(() => {
-      createDots();
-      updateDimensions();
-      goToSlide(0);
-      startAutoScroll();
-    }, 250);
-  });
-
-  // Initial setup
-  createDots();
-  updateDimensions();
-  startAutoScroll();
+  // Initialize the carousel
+  initCarousel();
 });
