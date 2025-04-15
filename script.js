@@ -310,3 +310,109 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize the carousel
   initCarousel();
 });
+
+// Add this to your existing script.js
+document.addEventListener("DOMContentLoaded", function () {
+  const contactForm = document.getElementById("contactForm");
+
+  contactForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    // Get form values
+    const formData = {
+      name: document.getElementById("name").value,
+      email: document.getElementById("email").value,
+      countryCode: document.getElementById("countryCode").value,
+      phone: document.getElementById("phone").value,
+      message: document.getElementById("message").value,
+    };
+
+    // Basic form validation
+    if (!validateForm(formData)) {
+      return;
+    }
+
+    // Here you would typically send the data to your server
+    console.log("Form submitted:", formData);
+
+    // Show success message
+    showSuccessMessage();
+
+    // Reset form
+    contactForm.reset();
+  });
+
+  // Form validation
+  function validateForm(data) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\d{10}$/;
+
+    if (data.name.length < 2) {
+      alert("Please enter a valid name");
+      return false;
+    }
+
+    if (!emailRegex.test(data.email)) {
+      alert("Please enter a valid email address");
+      return false;
+    }
+
+    if (!phoneRegex.test(data.phone)) {
+      alert("Please enter a valid 10-digit phone number");
+      return false;
+    }
+
+    if (data.message.length < 10) {
+      alert("Please enter a message with at least 10 characters");
+      return false;
+    }
+
+    return true;
+  }
+
+  // Success message
+  function showSuccessMessage() {
+    const successMessage = document.createElement("div");
+    successMessage.className = "success-message";
+    successMessage.textContent =
+      "Thank you for your message. We will contact you soon!";
+    successMessage.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            animation: slideIn 0.5s ease;
+        `;
+
+    document.body.appendChild(successMessage);
+
+    setTimeout(() => {
+      successMessage.style.animation = "slideOut 0.5s ease";
+      setTimeout(() => {
+        document.body.removeChild(successMessage);
+      }, 500);
+    }, 3000);
+  }
+});
+
+// Add these animations to your CSS
+document.head.insertAdjacentHTML(
+  "beforeend",
+  `
+    <style>
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+    </style>
+`
+);

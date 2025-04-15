@@ -1142,3 +1142,177 @@ html {
 .dark-mode .card-icon i {
   color: var(--pure-black);
 }
+
+/* Contact Section Styles */
+.contact-section {
+  padding: 5rem 2rem;
+  background: var(--pure-white);
+}
+
+.contact-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  gap: 4rem;
+  padding: 2rem;
+}
+
+/* Form Styles */
+.contact-form-wrapper {
+  flex: 1;
+  min-width: 300px;
+}
+
+.contact-form {
+  background: var(--off-white);
+  padding: 2.5rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--pure-black);
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea,
+.country-code {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--light-grey);
+  border-radius: 8px;
+  background: var(--pure-white);
+  color: var(--pure-black);
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.country-code:focus {
+  outline: none;
+  border-color: var(--dark-grey);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Phone Input Styles */
+.phone-input-container {
+  display: flex;
+  gap: 1rem;
+}
+
+.country-code {
+  width: 120px;
+  flex-shrink: 0;
+}
+
+/* Submit Button */
+.submit-btn {
+  width: 100%;
+  padding: 1rem;
+  background: var(--pure-black);
+  color: var(--pure-white);
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.submit-btn:hover {
+  background: var(--dark-grey);
+  transform: translateY(-2px);
+}
+
+/* Image Styles */
+.contact-image {
+  flex: 1;
+  min-width: 300px;
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.contact-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+  transition: transform 0.3s ease;
+}
+
+.contact-image:hover img {
+  transform: scale(1.05);
+}
+
+/* Dark Mode Styles */
+.dark-mode .contact-form {
+  background: var(--darker-grey);
+}
+
+.dark-mode .form-group input,
+.dark-mode .form-group textarea,
+.dark-mode .country-code {
+  background: var(--dark-grey);
+  border-color: var(--medium-grey);
+  color: var(--pure-white);
+}
+
+.dark-mode .form-group label {
+  color: var(--pure-white);
+}
+
+.dark-mode .submit-btn {
+  background: var(--pure-white);
+  color: var(--pure-black);
+}
+
+.dark-mode .submit-btn:hover {
+  background: var(--light-grey);
+}
+
+/* Responsive Styles - Updated */
+@media screen and (max-width: 1024px) {
+  .contact-container {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .contact-form-wrapper {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .contact-section {
+    padding: 3rem 1rem;
+  }
+
+  .contact-form {
+    padding: 1.5rem;
+  }
+
+  /* Hide image on mobile */
+  .contact-image {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .phone-input-container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .country-code {
+    width: 100%;
+  }
+}
