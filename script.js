@@ -185,3 +185,143 @@ function init() {
   // Init TypeWriter
   new TypeWriter(txtElement, words, wait);
 }
+
+// Add this to your existing script.js
+document.addEventListener("DOMContentLoaded", function () {
+  const track = document.querySelector(".services-track");
+  const cards = document.querySelectorAll(".service-card");
+  const dotsContainer = document.querySelector(".service-dots");
+  let currentIndex = 0;
+  let interval;
+
+  // Calculate dimensions
+  function updateDimensions() {
+    const isMobile = window.innerWidth <= 768;
+    const containerWidth = track.parentElement.offsetWidth;
+    const cardWidth = isMobile
+      ? containerWidth - 32 // Account for margins
+      : (containerWidth - 64) / 3; // Desktop: 3 cards with gaps
+
+    // Update card widths
+    cards.forEach((card) => {
+      card.style.width = `${cardWidth}px`;
+    });
+
+    return { isMobile, containerWidth, cardWidth };
+  }
+
+  // Create dots
+  function createDots() {
+    dotsContainer.innerHTML = ""; // Clear existing dots
+    const { isMobile } = updateDimensions();
+    const totalSlides = Math.ceil(cards.length / (isMobile ? 1 : 3));
+
+    for (let i = 0; i < totalSlides; i++) {
+      const dot = document.createElement("div");
+      dot.classList.add("dot");
+      if (i === 0) dot.classList.add("active");
+      dot.addEventListener("click", () => goToSlide(i));
+      dotsContainer.appendChild(dot);
+    }
+  }
+
+  // Update dots
+  function updateDots() {
+    const dots = document.querySelectorAll(".dot");
+    dots.forEach((dot, index) => {
+      dot.classList.toggle("active", index === currentIndex);
+    });
+  }
+
+  // Go to specific slide
+  function goToSlide(index) {
+    const { isMobile, cardWidth } = updateDimensions();
+    const cardsPerView = isMobile ? 1 : 3;
+    currentIndex = index;
+
+    // Calculate the scroll position
+    let scrollOffset;
+    if (isMobile) {
+      // Center the card on mobile
+      scrollOffset = -(index * (cardWidth + 16)); // 16px for gap
+    } else {
+      // Show multiple cards on desktop
+      scrollOffset = -(index * (cardWidth * 3 + 32)); // 32px for gaps
+    }
+
+    track.style.transform = `translateX(${scrollOffset}px)`;
+    updateDots();
+  }
+
+  // Auto scroll
+  function startAutoScroll() {
+    interval = setInterval(() => {
+      const { isMobile } = updateDimensions();
+      const totalSlides = Math.ceil(cards.length / (isMobile ? 1 : 3));
+      currentIndex = (currentIndex + 1) % totalSlides;
+      goToSlide(currentIndex);
+    }, 2000);
+  }
+
+  // Touch events for mobile
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  track.addEventListener(
+    "touchstart",
+    (e) => {
+      touchStartX = e.touches[0].clientX;
+      clearInterval(interval);
+    },
+    { passive: true }
+  );
+
+  track.addEventListener(
+    "touchmove",
+    (e) => {
+      touchEndX = e.touches[0].clientX;
+    },
+    { passive: true }
+  );
+
+  track.addEventListener("touchend", () => {
+    const difference = touchStartX - touchEndX;
+    if (Math.abs(difference) > 50) {
+      // Minimum swipe distance
+      const { isMobile } = updateDimensions();
+      const totalSlides = Math.ceil(cards.length / (isMobile ? 1 : 3));
+      if (difference > 0) {
+        // Swipe left
+        currentIndex = (currentIndex + 1) % totalSlides;
+      } else {
+        // Swipe right
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+      }
+      goToSlide(currentIndex);
+    }
+    startAutoScroll();
+  });
+
+  // Pause on hover (desktop only)
+  track.addEventListener("mouseenter", () => clearInterval(interval));
+  track.addEventListener("mouseleave", startAutoScroll);
+
+  // Handle resize
+  let resizeTimer;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    clearInterval(interval);
+
+    resizeTimer = setTimeout(() => {
+      createDots();
+      updateDimensions();
+      goToSlide(0);
+      startAutoScroll();
+    }, 250);
+  });
+
+  // Initial setup
+  createDots();
+  updateDimensions();
+  startAutoScroll();
+});
