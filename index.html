@@ -9,6 +9,14 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"
+    ></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body class="light-mode">
     <!-- Navigation Bar -->
@@ -43,18 +51,29 @@
       </div>
       <div class="hero-content">
         <div class="hero-text">
-          <h1>
-            Welcome to<br /><span class="highlight"
-              >Centennial Convention Center</span
+          <h1 class="centered-title">Your Space for Every Occasion</h1>
+          <div class="typing-container centered-typing">
+            <span class="typing-text"
+              >A versatile event hall for celebrations, meetings, community
+              gatherings & more</span
             >
-          </h1>
-          <div class="typing-container">
-            <span class="typing-text"></span>
             <span class="typing-cursor">|</span>
           </div>
-          <p class="hero-description">
-            Creating Unforgettable Moments for Your Special Events
-          </p>
+          <div class="description-container">
+            <p class="hero-description">
+              Looking for a flexible, welcoming venue that fits up to 150
+              guests? Whether you're planning a business meeting, anniversary
+              party, educational workshop...
+              <span class="read-more-text">
+                cultural celebration, fundraiser, or private dinner—our event
+                hall is designed to adapt to your vision. With a clean, modern
+                layout and neutral decor, the space can be styled to match your
+                event perfectly. From casual to formal, creative to
+                classic—we've got you covered.
+              </span>
+              <button class="read-more-btn">Read More</button>
+            </p>
+          </div>
           <div class="cta-buttons">
             <a href="#contact" class="cta-button primary">Book Venue</a>
             <a href="#gallery" class="cta-button secondary">View Gallery</a>
@@ -355,7 +374,19 @@
               ></textarea>
             </div>
 
-            <button type="submit" class="submit-btn">Send Message</button>
+            <!-- Add a loading spinner -->
+            <div
+              class="loading-spinner"
+              id="loadingSpinner"
+              style="display: none"
+            >
+              <div class="spinner"></div>
+              <p>Sending message...</p>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+              <span>Send Message</span>
+            </button>
           </form>
         </div>
 
@@ -366,6 +397,132 @@
             alt="Convention Center Interior"
             loading="lazy"
           />
+        </div>
+      </div>
+    </section>
+
+    <!-- Add this after the contact section -->
+    <section id="faq" class="faq-section">
+      <div class="section-header">
+        <h2>Most Asked Questions</h2>
+        <p>Everything You Need to Know About Booking Our Venue</p>
+      </div>
+
+      <div class="faq-container">
+        <div class="faq-intro">
+          <h3>5 Important Questions to Ask Before You Book an Event Hall</h3>
+          <p>
+            When planning a corporate event, anniversary celebration, or special
+            gathering, choosing the right event hall is one of the most
+            important steps. The right venue sets the tone, impacts on the guest
+            experience, and ensures everything runs smoothly.
+          </p>
+        </div>
+
+        <div class="accordion">
+          <!-- Question 1 -->
+          <div class="accordion-item">
+            <button class="accordion-button">
+              <span>What's included in the venue rental price?</span>
+              <i class="fas fa-plus"></i>
+            </button>
+            <div class="accordion-content">
+              <p>
+                Not all event venues include the same things. Be sure to ask if
+                the rental price includes essentials like tables, chairs, sound
+                systems, and event setup. Some halls offer all-inclusive
+                packages, while others may charge separately for each item.
+              </p>
+            </div>
+          </div>
+
+          <!-- Question 2 -->
+          <div class="accordion-item">
+            <button class="accordion-button">
+              <span
+                >How many hours are included—and what are the overtime
+                fees?</span
+              >
+              <i class="fas fa-plus"></i>
+            </button>
+            <div class="accordion-content">
+              <p>
+                Most halls include a set number of hours. Clarify how long
+                you'll have the space, and ask what happens if your event goes
+                longer than planned. Knowing this helps you plan better,
+                especially for evening events or full-day corporate functions.
+              </p>
+            </div>
+          </div>
+
+          <!-- Question 3 -->
+          <div class="accordion-item">
+            <button class="accordion-button">
+              <span
+                >Can I bring in my own vendors like caterers or
+                decorators?</span
+              >
+              <i class="fas fa-plus"></i>
+            </button>
+            <div class="accordion-content">
+              <p>
+                Some venues require you to use their in-house services, while
+                others allow you to bring your own vendors. If you're working
+                with a preferred caterer, decorator, or event planner, make sure
+                the venue allows outside vendors.
+              </p>
+            </div>
+          </div>
+
+          <!-- Question 4 -->
+          <div class="accordion-item">
+            <button class="accordion-button">
+              <span
+                >Will there be staff available on the day of the event?</span
+              >
+              <i class="fas fa-plus"></i>
+            </button>
+            <div class="accordion-content">
+              <p>
+                Having venue staff on-site during your event can make a huge
+                difference. They can assist with equipment, troubleshoot issues,
+                and make sure everything runs smoothly from start to finish.
+              </p>
+            </div>
+          </div>
+
+          <!-- Question 5 -->
+          <div class="accordion-item">
+            <button class="accordion-button">
+              <span>Is setup and cleanup time included in the booking?</span>
+              <i class="fas fa-plus"></i>
+            </button>
+            <div class="accordion-content">
+              <p>
+                Ask how much time you'll have before and after your event for
+                decorating, setting up equipment, and cleaning up. Some venues
+                provide extra buffer time, which helps reduce stress and keeps
+                things on schedule.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-cta">
+          <h3>
+            Looking for a Reliable Event Hall for Your Next Celebration or
+            Business Event?
+          </h3>
+          <p>
+            Our venue is perfect for anniversary parties, corporate meetings,
+            workshops, and private gatherings. We offer flexible rental
+            packages, modern amenities, and a supportive on-site team to help
+            your event go smoothly.
+          </p>
+          <div class="cta-buttons">
+            <a href="#contact" class="cta-button primary">Contact Us Today</a>
+            <a href="#gallery" class="cta-button secondary">Book a Tour</a>
+          </div>
         </div>
       </div>
     </section>

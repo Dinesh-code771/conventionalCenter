@@ -311,9 +311,16 @@ document.addEventListener("DOMContentLoaded", function () {
   initCarousel();
 });
 
-// Add this to your existing script.js
+// Initialize EmailJS
+(function () {
+  // Replace with your EmailJS public key
+  emailjs.init("B40H23OIbfgyVxxEm");
+})();
+
 document.addEventListener("DOMContentLoaded", function () {
   const contactForm = document.getElementById("contactForm");
+  const loadingSpinner = document.getElementById("loadingSpinner");
+  const submitBtn = document.getElementById("submitBtn");
 
   contactForm.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -332,68 +339,171 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // Here you would typically send the data to your server
-    console.log("Form submitted:", formData);
+    // Show loading spinner
+    loadingSpinner.style.display = "flex";
+    submitBtn.disabled = true;
 
-    // Show success message
-    showSuccessMessage();
+    // Format the message with all details
+    const formattedMessage = `
+New Contact Form Submission
 
-    // Reset form
-    contactForm.reset();
+Customer Details:
+----------------
+Name: ${formData.name}
+Email: ${formData.email}
+Phone: ${formData.countryCode} ${formData.phone}
+
+Message:
+----------------
+${formData.message}
+
+----------------
+This email was sent from your website contact form.
+    `;
+
+    // Prepare template parameters
+    const templateParams = {
+      to_email: "akeaptidinu@gmail.com",
+      from_name: formData.name,
+      from_email: formData.email,
+      phone: `${formData.countryCode} ${formData.phone}`,
+      message: formattedMessage,
+      // Add reply-to header
+      reply_to: formData.email,
+    };
+
+    // Send email using EmailJS
+    emailjs
+      .send(
+        "service_02qmmzv", // Replace with your EmailJS service ID
+        "template_4lcxnjo", // Replace with your EmailJS template ID
+        templateParams
+      )
+      .then(function (response) {
+        // Hide loading spinner
+        loadingSpinner.style.display = "none";
+        submitBtn.disabled = false;
+
+        // Show success message
+        showSuccessMessage(
+          "Thank you! Your message has been sent successfully. We will contact you soon."
+        );
+
+        // Send auto-reply to customer
+        sendAutoReply(formData);
+
+        // Reset form
+        contactForm.reset();
+      })
+      .catch(function (error) {
+        // Hide loading spinner
+        loadingSpinner.style.display = "none";
+        submitBtn.disabled = false;
+
+        // Show error message
+        showErrorMessage(
+          "Sorry, there was an error sending your message. Please try again."
+        );
+        console.error("EmailJS error:", error);
+      });
   });
 
-  // Form validation
+  // Auto-reply function
+  function sendAutoReply(formData) {
+    const autoReplyParams = {
+      to_email: formData.email,
+      to_name: formData.name,
+      message: `
+Dear ${formData.name},
+
+Thank you for contacting Centennial Convention Center. We have received your inquiry and will get back to you shortly.
+
+Your submitted details:
+- Name: ${formData.name}
+- Email: ${formData.email}
+- Phone: ${formData.countryCode} ${formData.phone}
+
+We appreciate your interest in our services and will respond to your message within 24-48 hours.
+
+Best regards,
+Centennial Convention Center Team
+      `,
+    };
+
+    // Send auto-reply email
+    emailjs
+      .send("service_02qmmzv", "template_4lcxnjo", autoReplyParams)
+      .catch(console.error);
+  }
+
+  // Form validation function
   function validateForm(data) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^\d{10}$/;
 
     if (data.name.length < 2) {
-      alert("Please enter a valid name");
+      showErrorMessage("Please enter a valid name");
       return false;
     }
 
     if (!emailRegex.test(data.email)) {
-      alert("Please enter a valid email address");
+      showErrorMessage("Please enter a valid email address");
       return false;
     }
 
     if (!phoneRegex.test(data.phone)) {
-      alert("Please enter a valid 10-digit phone number");
+      showErrorMessage("Please enter a valid 10-digit phone number");
       return false;
     }
 
     if (data.message.length < 10) {
-      alert("Please enter a message with at least 10 characters");
+      showErrorMessage("Please enter a message with at least 10 characters");
       return false;
     }
 
     return true;
   }
 
-  // Success message
-  function showSuccessMessage() {
-    const successMessage = document.createElement("div");
-    successMessage.className = "success-message";
-    successMessage.textContent =
-      "Thank you for your message. We will contact you soon!";
-    successMessage.style.cssText = `
+  // Success message function
+  function showSuccessMessage(message) {
+    showNotification(message, "success");
+  }
+
+  // Error message function
+  function showErrorMessage(message) {
+    showNotification(message, "error");
+  }
+
+  // Generic notification function
+  function showNotification(message, type) {
+    const notification = document.createElement("div");
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+
+    notification.style.cssText = `
             position: fixed;
             top: 20px;
             right: 20px;
-            background: #4CAF50;
-            color: white;
             padding: 1rem 2rem;
             border-radius: 8px;
+            color: white;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             animation: slideIn 0.5s ease;
+            z-index: 1000;
         `;
 
-    document.body.appendChild(successMessage);
+    if (type === "success") {
+      notification.style.background = "#4CAF50";
+    } else {
+      notification.style.background = "#f44336";
+    }
+
+    document.body.appendChild(notification);
 
     setTimeout(() => {
-      successMessage.style.animation = "slideOut 0.5s ease";
+      notification.style.animation = "slideOut 0.5s ease";
       setTimeout(() => {
-        document.body.removeChild(successMessage);
+        document.body.removeChild(notification);
       }, 500);
     }, 3000);
   }
@@ -416,3 +526,55 @@ document.head.insertAdjacentHTML(
     </style>
 `
 );
+
+// Add this to your existing script.js
+document.addEventListener("DOMContentLoaded", function () {
+  const accordionButtons = document.querySelectorAll(".accordion-button");
+
+  accordionButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const content = button.nextElementSibling;
+      const icon = button.querySelector("i");
+
+      // Close all other accordion items
+      accordionButtons.forEach((otherButton) => {
+        if (otherButton !== button) {
+          otherButton.classList.remove("active");
+          otherButton.nextElementSibling.style.maxHeight = null;
+          otherButton.querySelector("i").style.transform = "rotate(0deg)";
+        }
+      });
+
+      // Toggle current accordion item
+      button.classList.toggle("active");
+
+      if (button.classList.contains("active")) {
+        content.style.maxHeight = content.scrollHeight + "px";
+        icon.style.transform = "rotate(45deg)";
+      } else {
+        content.style.maxHeight = null;
+        icon.style.transform = "rotate(0deg)";
+      }
+    });
+  });
+});
+
+// Add this to your existing script.js
+document.addEventListener("DOMContentLoaded", function () {
+  // Read More functionality
+  const readMoreBtn = document.querySelector(".read-more-btn");
+  const descriptionContainer = document.querySelector(".description-container");
+
+  if (readMoreBtn) {
+    readMoreBtn.addEventListener("click", function () {
+      descriptionContainer.classList.add("expanded");
+      // Optional: Smooth scroll to show expanded text
+      setTimeout(() => {
+        descriptionContainer.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }, 100);
+    });
+  }
+});
