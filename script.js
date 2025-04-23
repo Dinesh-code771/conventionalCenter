@@ -278,9 +278,6 @@ document.addEventListener("DOMContentLoaded", function () {
   track.addEventListener("mouseenter", () => clearInterval(autoScrollInterval));
   track.addEventListener("mouseleave", startAutoScroll);
 
-  // Handle window resize
-  window.addEventListener("resize", initCarousel);
-
   // Touch events for mobile
   let touchStartX = 0;
   let touchEndX = 0;
@@ -558,7 +555,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
-
 // Add this to your existing script.js
 document.addEventListener("DOMContentLoaded", function () {
   // Read More functionality
@@ -578,3 +574,199 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+// About Section Functionality
+document.addEventListener("DOMContentLoaded", function () {
+  const navTabs = document.querySelectorAll(".nav-tab");
+  const contentTabs = document.querySelectorAll(".content-tab");
+  let currentTabIndex = 0;
+  let autoScrollInterval;
+  let initialAnimationDone = false;
+
+  // Helper function to check if mobile view
+  function isMobile() {
+    return window.innerWidth <= 768;
+  }
+
+  // Function to switch tabs
+  function switchTab(index) {
+    // Remove active class from all tabs
+    navTabs.forEach((t) => t.classList.remove("active"));
+    contentTabs.forEach((c) => {
+      c.classList.remove("active", "previous");
+      c.style.transform = "";
+    });
+
+    // Add active class to selected tab
+    navTabs[index].classList.add("active");
+    contentTabs[index].classList.add("active");
+    currentTabIndex = index;
+  }
+
+  // Initial auto-change animation for desktop
+  function playInitialAnimation() {
+    let animationIndex = 0;
+    const totalTabs = navTabs.length;
+
+    function animateNextTab() {
+      if (animationIndex < totalTabs) {
+        switchTab(animationIndex);
+        animationIndex++;
+        setTimeout(animateNextTab, 1000);
+      } else {
+        initialAnimationDone = true;
+        switchTab(0);
+      }
+    }
+
+    animateNextTab();
+  }
+
+  // Desktop tab functionality
+  function initDesktopTabs() {
+    if (!initialAnimationDone && !isMobile()) {
+      playInitialAnimation();
+    }
+
+    navTabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => {
+        if (initialAnimationDone) {
+          switchTab(index);
+        }
+      });
+    });
+  }
+
+  // Mobile carousel functionality
+  function initMobileCarousel() {
+    const mobileIndicators = document.querySelector(".mobile-indicators");
+
+    // Create mobile indicators
+    mobileIndicators.innerHTML = "";
+    contentTabs.forEach((_, index) => {
+      const indicator = document.createElement("div");
+      indicator.classList.add("indicator");
+      if (index === 0) indicator.classList.add("active");
+      indicator.addEventListener("click", () => goToSlide(index));
+      mobileIndicators.appendChild(indicator);
+    });
+
+    function updateTabsAndIndicators(index) {
+      // Update indicators
+      document.querySelectorAll(".indicator").forEach((ind, i) => {
+        ind.classList.toggle("active", i === index);
+      });
+
+      // Update nav tabs
+      navTabs.forEach((tab, i) => {
+        tab.classList.toggle("active", i === index);
+      });
+
+      // Update content tabs
+      contentTabs.forEach((tab, i) => {
+        tab.classList.remove("active", "previous");
+        if (i === index) {
+          tab.classList.add("active");
+          tab.style.transform = "translateX(0)";
+        } else if (i < index) {
+          tab.classList.add("previous");
+          tab.style.transform = "translateX(-100%)";
+        } else {
+          tab.style.transform = "translateX(100%)";
+        }
+      });
+
+      currentTabIndex = index;
+    }
+
+    function goToSlide(index) {
+      updateTabsAndIndicators(index);
+    }
+
+    function startAutoScroll() {
+      clearInterval(autoScrollInterval);
+      autoScrollInterval = setInterval(() => {
+        const nextIndex = (currentTabIndex + 1) % contentTabs.length;
+        goToSlide(nextIndex);
+      }, 3000);
+    }
+
+    // Touch events for mobile swipe
+    const aboutContainer = document.querySelector(".about-container");
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    aboutContainer.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      clearInterval(autoScrollInterval);
+    });
+
+    aboutContainer.addEventListener("touchend", (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+      startAutoScroll();
+    });
+
+    function handleSwipe() {
+      const difference = touchStartX - touchEndX;
+      if (Math.abs(difference) > 50) {
+        if (difference > 0) {
+          // Swipe left
+          const nextIndex = (currentTabIndex + 1) % contentTabs.length;
+          goToSlide(nextIndex);
+        } else {
+          // Swipe right
+          const nextIndex =
+            (currentTabIndex - 1 + contentTabs.length) % contentTabs.length;
+          goToSlide(nextIndex);
+        }
+      }
+    }
+
+    // Make nav tabs clickable in mobile view
+    navTabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => {
+        clearInterval(autoScrollInterval);
+        goToSlide(index);
+        startAutoScroll();
+      });
+    });
+
+    // Start the carousel
+    goToSlide(0);
+    startAutoScroll();
+
+    // Pause on hover for desktop devices
+    aboutContainer.addEventListener("mouseenter", () =>
+      clearInterval(autoScrollInterval)
+    );
+    aboutContainer.addEventListener("mouseleave", startAutoScroll);
+  }
+
+  // Initialize based on screen size
+  function initAboutSection() {
+    clearInterval(autoScrollInterval);
+    if (isMobile()) {
+      initMobileCarousel();
+    } else {
+      initDesktopTabs();
+    }
+  }
+
+  // Initialize on load and resize
+  initAboutSection();
+  window.addEventListener("resize", debounce(initAboutSection, 250));
+});
+
+// Debounce helper function
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}

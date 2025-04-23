@@ -32,11 +32,11 @@
       </div>
       <ul class="nav-links">
         <li><a href="#home" class="active">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#reviews">Reviews</a></li>
         <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#services">Services</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#about">About</a></li>
         <li class="theme-toggle">
           <i class="fas fa-moon" id="themeToggle"></i>
         </li>
@@ -237,7 +237,7 @@
           <!-- Card 2 -->
           <div class="service-card">
             <div class="card-icon">
-              <i class="fas fa-rings-wedding"></i>
+              <i class="fas fa-heart"></i>
             </div>
             <h3>Weddings</h3>
             <p>Create your perfect wedding day with our elegant venues.</p>
@@ -524,6 +524,94 @@
             <a href="#gallery" class="cta-button secondary">Book a Tour</a>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- Update the about section structure for mobile -->
+    <section id="about" class="about-section">
+      <div class="section-header">
+        <h2>About Us</h2>
+        <p>Learn More About Our Venue</p>
+      </div>
+
+      <div class="about-container">
+        <!-- Add the navigation tabs for desktop -->
+        <div class="about-nav">
+          <button class="nav-tab active" data-tab="about">
+            <i class="fas fa-building"></i> About Us
+          </button>
+          <button class="nav-tab" data-tab="services">
+            <i class="fas fa-concierge-bell"></i> Our Services
+          </button>
+          <button class="nav-tab" data-tab="payment">
+            <i class="fas fa-credit-card"></i> Payment Options
+          </button>
+          <button class="nav-tab" data-tab="language">
+            <i class="fas fa-language"></i> Languages
+          </button>
+          <button class="nav-tab" data-tab="hours">
+            <i class="fas fa-clock"></i> Business Hours
+          </button>
+        </div>
+
+        <div class="about-content">
+          <!-- Content tabs remain the same -->
+          <div class="content-tab active" id="about-content" data-index="0">
+            <h3><i class="fas fa-building"></i> About Us</h3>
+            <p>
+              Centennial Event Center, located in the Hollywood Suites by Hilton
+              Center Valley, is your go-to event venue in Centennial, CO. With
+              our talented event staff, competitive rates, and extensive floor
+              space, we're perfect for a wide range of events. Transform our
+              state-of-the-art facility with our top-notch equipment and
+              spacious party rooms, perfect for any kind of big event. From
+              business functions and company meetings to weddings and live
+              concerts, you can rest assured that your guests will have a
+              fantastic time!
+            </p>
+          </div>
+          <div class="content-tab" id="services-content" data-index="1">
+            <h3><i class="fas fa-concierge-bell"></i> Our Services</h3>
+            <ul>
+              <li>Full-service event planning</li>
+              <li>Catering services</li>
+              <li>Audio-visual equipment</li>
+              <li>Customizable floor plans</li>
+              <li>Professional event staff</li>
+              <li>Decoration services</li>
+            </ul>
+          </div>
+          <div class="content-tab" id="payment-content" data-index="2">
+            <h3><i class="fas fa-credit-card"></i> Payment Options</h3>
+            <ul>
+              <li>Credit/Debit Cards</li>
+              <li>Bank Transfer</li>
+              <li>Cash</li>
+              <li>Payment Plans Available</li>
+              <li>Corporate Billing</li>
+            </ul>
+          </div>
+          <div class="content-tab" id="language-content" data-index="3">
+            <h3><i class="fas fa-language"></i> Languages We Speak</h3>
+            <ul>
+              <li>English</li>
+              <li>Spanish</li>
+              <li>French</li>
+              <li>Mandarin</li>
+            </ul>
+          </div>
+          <div class="content-tab" id="hours-content" data-index="4">
+            <h3><i class="fas fa-clock"></i> Business Hours</h3>
+            <ul class="hours-list">
+              <li><span>Monday - Friday:</span> 9:00 AM - 8:00 PM</li>
+              <li><span>Saturday:</span> 10:00 AM - 6:00 PM</li>
+              <li><span>Sunday:</span> By Appointment</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Mobile Indicators -->
+        <div class="mobile-indicators"></div>
       </div>
     </section>
 
