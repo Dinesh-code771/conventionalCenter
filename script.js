@@ -1,15 +1,6 @@
 // Theme Toggle
-const themeToggle = document.getElementById("themeToggle");
+// const themeToggle = document.getElementById("themeToggle");
 const body = document.body;
-
-themeToggle.addEventListener("click", () => {
-  body.classList.toggle("dark-mode");
-  if (body.classList.contains("dark-mode")) {
-    themeToggle.classList.replace("fa-moon", "fa-sun");
-  } else {
-    themeToggle.classList.replace("fa-sun", "fa-moon");
-  }
-});
 
 // Mobile Navigation Toggle
 const navToggle = document.querySelector(".nav-toggle");
