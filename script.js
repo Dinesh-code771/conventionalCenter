@@ -351,7 +351,7 @@ This email was sent from your website contact form.
 
     // Prepare template parameters
     const templateParams = {
-      to_email: "akeaptidinu@gmail.com",
+      to_email: "Centennialeventcenter30@gmail.com",
       from_name: formData.name,
       from_email: formData.email,
       phone: `${formData.countryCode} ${formData.phone}`,
