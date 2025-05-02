@@ -70,12 +70,20 @@ body {
 .logo {
   display: flex;
   align-items: center;
+  gap: 1rem;
 }
 
 .logo-image {
-  height: 50px; /* Adjust this value based on your needs */
+  height: 90px;
   width: auto;
   object-fit: contain;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--pure-black);
+  white-space: nowrap;
 }
 
 .nav-links {
@@ -134,70 +142,70 @@ body {
 
 /* Updated Hero Section */
 .hero {
-  min-height: 100vh;
   position: relative;
-  overflow: hidden;
-  margin-top: 70px;
-  background: var(--pure-white);
-}
-
-.hero-background {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 100%;
-  background-color: var(--pure-white);
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url("./assests/hero.webp") center center/cover no-repeat;
+  /* fallback color if image fails to load */
+  background-color: #222;
+  z-index: 1;
+  padding: 6rem 0 4rem 0;
 }
 
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: none;
-}
-
-/* Animated background shapes */
-.hero::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    45deg,
-    rgba(66, 66, 66, 0.3) 0%,
-    rgba(0, 0, 0, 0.3) 50%,
-    rgba(66, 66, 66, 0.3) 100%
-  );
-  animation: gradientMove 15s ease infinite;
-  background-size: 200% 200%;
-}
-
-@keyframes gradientMove {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* Hero Content Styles */
 .hero-content {
   position: relative;
   z-index: 2;
-  min-height: calc(100vh - 70px);
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 4rem 6rem;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  color: var(--pure-white);
+  /* Add a subtle text shadow for readability */
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Optional: Overlay for better text contrast */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.45) 0%,
+    rgba(0, 0, 0, 0.25) 60%,
+    rgba(0, 0, 0, 0.65) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .hero {
+    min-height: 65vh;
+    padding: 4rem 0 2rem 0;
+    background-position: center top;
+  }
+  .hero-content {
+    max-width: 95vw;
+    font-size: 0.98em;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    min-height: 80vh;
+    padding: 2.5rem 0 1.5rem 0;
+    background-position: center top;
+    background-size: cover;
+  }
+  .hero-content {
+    padding: 0 0.5rem;
+    font-size: 0.95em;
+  }
 }
 
 .hero-text {
@@ -233,14 +241,14 @@ body {
 }
 
 .typing-text {
-  font-size: 2.5rem;
-  color: var(--medium-grey);
+  font-size: 2rem;
+  color: var(--pure-white) !important ;
   font-weight: 600;
 }
 
 .typing-cursor {
   font-size: 2.5rem;
-  color: var(--medium-grey);
+  color: var(--pure-white) !important;
   animation: blink 0.7s infinite;
   margin-left: 5px;
 }
@@ -249,7 +257,7 @@ body {
   text-align: left;
   max-width: 800px;
   font-size: 1.5rem;
-  color: var(--dark-grey);
+  color: var(--pure-white) !important;
   margin: 2rem 0 1rem 0;
   line-height: 1.6;
   font-weight: 400;
@@ -268,7 +276,7 @@ body {
 .cta-buttons {
   display: flex;
   gap: 2rem;
-  justify-content: flex-start;
+  justify-content: center;
   margin-top: 3rem;
 }
 
@@ -404,7 +412,7 @@ body {
     padding: 2rem 1rem;
   }
   .typing-text {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
   .hero-description,
   .hero-sub-description {
@@ -430,7 +438,7 @@ body {
     font-size: 2.2rem;
   }
   .typing-text {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
   }
 }
 
@@ -556,7 +564,7 @@ html {
 
 .dark-mode .typing-text,
 .dark-mode .typing-cursor {
-  color: var(--pure-white);
+  color: var(--pure-white) !important;
 }
 
 .dark-mode .cta-button.primary {
@@ -596,7 +604,7 @@ html {
 }
 
 .dark-mode .pattern-overlay {
-  opacity: 0.1; /* Reduced pattern visibility */
+  opacity: 0.1;
   background-image: linear-gradient(
     45deg,
     rgba(255, 255, 255, 0.03) 25%,
@@ -1469,10 +1477,11 @@ p {
   font-size: 4.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  color: var(--pure-black);
+  color: var(--pure-white) !important;
   text-shadow: none;
   line-height: 1.2;
   letter-spacing: -1px;
+  padding-top: 100px;
 }
 
 .centered-typing {
@@ -1502,7 +1511,7 @@ p {
   display: inline-block;
   background: none;
   border: none;
-  color: var(--pure-black);
+  color: var(--pure-white);
   font-weight: 600;
   cursor: pointer;
   padding: 0.5rem;
@@ -1535,6 +1544,7 @@ p {
 /* Update responsive styles */
 @media screen and (max-width: 1400px) {
   .centered-title {
+    padding-top: 5%;
     font-size: 4rem;
   }
 }
@@ -1578,7 +1588,7 @@ p {
 /* Dark mode adjustments */
 .dark-mode .centered-title,
 .dark-mode .hero-description {
-  color: var(--pure-white);
+  color: var(--pure-white) !important;
 }
 
 .dark-mode .read-more-btn {
@@ -2001,5 +2011,175 @@ html {
   .dark-mode .nav-tab.active {
     background: var(--pure-white);
     color: var(--pure-black);
+  }
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 1024px) {
+  .logo-text {
+    font-size: 1.3rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navbar {
+    padding: 0.5rem 1rem;
+  }
+
+  .logo-image {
+    height: 40px;
+  }
+
+  .logo-text {
+    font-size: 1.1rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .logo-text {
+    display: none;
+  }
+}
+
+.reviews-section {
+  padding: 4rem 2rem;
+  background: var(--pure-white);
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.reviews-carousel-container {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.reviews-carousel-track {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2.5rem;
+  transition: transform 0.5s cubic-bezier(0.77, 0, 0.18, 1);
+  align-items: stretch;
+}
+
+.review-slide {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  min-height: 350px;
+}
+
+.review-slide img {
+  width: 100%;
+  height: 100%;
+  max-height: 420px;
+  object-fit: contain;
+  border-radius: 10px;
+  display: block;
+}
+
+.review-carousel-btn {
+  display: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--pure-black);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 2;
+  opacity: 0.8;
+  transition: background 0.2s;
+}
+
+.review-carousel-btn:hover {
+  background: var(--dark-grey);
+}
+
+.prev-btn {
+  left: -20px;
+}
+.next-btn {
+  right: -20px;
+}
+
+.review-dots {
+  display: none;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.review-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--light-grey);
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.review-dot.active {
+  background: var(--pure-black);
+}
+
+/* Responsive: Carousel for mobile */
+@media (max-width: 768px) {
+  .reviews-carousel-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.77, 0, 0.18, 1);
+    gap: 0;
+    overflow: hidden;
+  }
+  .review-slide {
+    min-width: 100%;
+    max-width: 100%;
+    flex: 0 0 100%;
+    box-sizing: border-box;
+    padding: 1rem 0.5rem;
+  }
+  .review-carousel-btn {
+    display: block;
+  }
+  .review-dots {
+    display: flex;
+  }
+}
+
+/* By default, show desktop version, hide mobile version */
+.description-desktop {
+  display: block;
+}
+.description-mobile {
+  display: none;
+}
+
+/* On mobile, swap: hide desktop, show mobile */
+@media (max-width: 768px) {
+  .description-desktop {
+    display: none;
+  }
+  .description-mobile {
+    display: none;
+  }
+  .description-mobile {
+    margin: 2rem auto;
+    max-width: 95vw;
+    padding: 1.2rem 1rem;
+    background: var(--off-white, #f7f7f7);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   }
 }
